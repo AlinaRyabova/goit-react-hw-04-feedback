@@ -21,7 +21,7 @@ const Statistics = ({
         </li>
       </ul>
     ) : (
-      <Notification message="No feedback given" />
+      <Notification message="There is no feedback" />
     )}
   </>
 );
