@@ -6,36 +6,32 @@ import Notification from './Notification/Notification';
 
 const options = ['good', 'bad', 'neutral'];
 
-export default function App() {
-  const [goodFeedback, setGoodFeedback] = useState(0);
-  const [neutralFeedback, setNeutralFeedback] = useState(0);
-  const [badFeedback, setBadFeedback] = useState(0);
+const App = () => {
+  const [feedback, setFeedback] = useState({
+    good: 0,
+    neutral: 0,
+    bad: 0,
+  });
 
   const countTotalFeedback = () => {
-    return goodFeedback + neutralFeedback + badFeedback;
+    const { good, neutral, bad } = feedback;
+    return good + bad + neutral;
   };
 
   const countPositiveFeedbackPercentage = () => {
     let totalFeedback = countTotalFeedback();
-    return totalFeedback ? Math.round((goodFeedback / totalFeedback) * 100) : 0;
+    const { good } = feedback;
+    return totalFeedback ? Math.round((good / totalFeedback) * 100) : 0;
   };
 
   const handleFeedback = option => {
-    switch (option) {
-      case 'good':
-        setGoodFeedback(prevGoodFeedback => prevGoodFeedback + 1);
-        break;
-      case 'neutral':
-        setNeutralFeedback(prevNeutralFeedback => prevNeutralFeedback + 1);
-        break;
-      case 'bad':
-        setBadFeedback(prevBadFeedback => prevBadFeedback + 1);
-        break;
-      default:
-        return;
-    }
+    setFeedback(prevFeedback => ({
+      ...prevFeedback,
+      [option]: prevFeedback[option] + 1,
+    }));
   };
 
+  const { good, neutral, bad } = feedback;
   const totalFeedbackCount = countTotalFeedback();
   const positiveFeedback = countPositiveFeedbackPercentage();
 
@@ -47,9 +43,9 @@ export default function App() {
       {totalFeedbackCount ? (
         <Section title={'Statistics'}>
           <Statistics
-            good={goodFeedback}
-            neutral={neutralFeedback}
-            bad={badFeedback}
+            good={good}
+            neutral={neutral}
+            bad={bad}
             total={totalFeedbackCount}
             positiveFeedbackPercentage={positiveFeedback}
           />
@@ -59,4 +55,6 @@ export default function App() {
       )}
     </>
   );
-}
+};
+
+export default App;
